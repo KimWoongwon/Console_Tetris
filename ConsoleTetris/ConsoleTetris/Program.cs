@@ -6,7 +6,8 @@ namespace ConsoleTetris
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Tetris tetris = new Tetris();
+            tetris.GameStart();
         }
     }
 }
