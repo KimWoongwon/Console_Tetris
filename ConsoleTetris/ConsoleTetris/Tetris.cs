@@ -6,73 +6,86 @@ namespace ConsoleTetris
 {
     class Tetris
     {
-        string[] bricks = new string[] { "****", "**\n**", "** \n **", " **\n** ", " * \n***", "**\n *\n *", "**\n* \n* " };
+        //string[] bricks = new string[] { "****", "**^**", "** ^ **", " **^** ", " * ^***", "**^ *^ *", "**^* ^* " };
+        char[,] bricks = new char[,]
+            {
+                 {'*', '*', ' '},
+                 {' ', '*', '*'}
+
+            };
+
+        //0,0 -> 0,3
+
         int startY = Environment.TickCount;
         int Checktime = 1000;
-        int PosX = 1; // 
+        int PosX = 1; //  
         int PosY = 0; // max = 16
+        bool Endflag = true;
         ConsoleKeyInfo info;
         public void BrickMove()
         {
             Checktime = 1000;
             if (Console.KeyAvailable)
             {
-                info = Console.ReadKey();
+                info = Console.ReadKey(); 
                 switch(info.Key)
                 {
                     case ConsoleKey.D:
-                        PosX++;
+                        if(PosX < 11 - bricks.GetLength(1))
+                            PosX++;
                         break;
                     case ConsoleKey.A:
-                        PosX--;
+                        if(PosX > 1)
+                            PosX--;
+                        break;
+                    case ConsoleKey.Spacebar:
+                        PosY = 17 - bricks.GetLength(0);
                         break;
                     case ConsoleKey.S:
                         Checktime = 300;
                         break;
+                    case ConsoleKey.Escape:
+                        Endflag = false;
+                        break;
+
                 }
             }
-            
+        }
+        public void DropBrick()
+        {
             int Timetemp = Environment.TickCount;
             if (Timetemp - startY > Checktime)
             {
                 startY = Timetemp;
-                if(PosY < 16)
+                if (PosY < 17 - bricks.GetLength(0))
                     PosY++;
             }
         }
+        //public char[,] turn(char [,] p_arr)
+        //{
+            
+        //    char[,] temp = new char[,];
+
+        //}
+
         public void Render()
         {
-            string Stage = "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "0          0\n" +
-                           "000000000000" ;
-            MtgClass doublebuffer = new MtgClass(Stage);
             
+            MtgClass doublebuffer = new MtgClass();
+            doublebuffer.SetBuffer(PosX, PosY, bricks);
 
+            Console.CursorVisible = false;
             Console.Write(doublebuffer.Getbuffer());
-
             Console.SetCursorPosition(0, 0);
 
         }
         public void GameStart()
         {
-            while(true)
+            while(Endflag)
             {
+                DropBrick();
                 BrickMove();
+
                 Render();
             }
         }
