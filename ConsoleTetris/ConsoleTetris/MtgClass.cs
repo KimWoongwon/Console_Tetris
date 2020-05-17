@@ -27,13 +27,16 @@ namespace ConsoleTetris
                                  { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
                                  { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
                                  { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
+                                 { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
+                                 { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
+                                 { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 },
                                  { 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 9 },
                                  { 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
                                };
                                 // 7의 존재 이유는 I형 블럭을 제외한 나머지 블럭은 3by3이라 넘어가지 않기 때문이다.
                                 // I형 블럭의 경우 4by4의 형태를 띄고 있어 넘어가져야 최대한 아래쪽까지 닿을수 있기 떄문이다.
         private int m_Width = 14;
-        private int m_Height = 18;
+        private int m_Height = 21;
         // 배열의 최대 인덱스 값.
         public int Height
         {
@@ -69,7 +72,7 @@ namespace ConsoleTetris
         public void LineRemove(int p_index)
         {
             // 라인이 꽉찼을때 그 라인을 비워주기 위한 1차원 배열
-            int[] EmptyLine = { 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 };
+            int[] EmptyLine = { 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9 };
             // 어느 라인이 지워져야 할지는 바깥에서 이미 p_index값으로 넘어오기때문에
             // 치환을 진행한다.
             for (int i = 0; i < m_Width; i++)
@@ -113,8 +116,10 @@ namespace ConsoleTetris
                     switch(buffer[i, j])
                     {
                         case 1:
-                        case 4:
                             returnbuf[(m_Width * i) + j] = '■';
+                            break;
+                        case 4:
+                            returnbuf[(m_Width * i) + j] = '◆';
                             break;
                         case 0:
                             returnbuf[(m_Width * i) + j] = '□';
